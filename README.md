@@ -19,9 +19,11 @@ The token syntax is as Simple as in Brainfuck, but some tokens have arguments
  - `E` - Empties the current memory cell
  - `V[variable identifier]` - V saves the current memory cell into the given variable 
  - `;` - Starts or ends a comment 
- - `A` - Adds the following number to the current cell
- - `D` - Subtracts the following number from the cell
- - `d` - Decodes a String into memory
+ - `A<number/variable>` - Adds the following number to the current cell
+ - `D<number/variable>` - Subtracts the following number from the cell
+ - `d"<string>"` - Decodes a String into memory
+ - `r<number/variable><token>` - Repeats the token times the given number
+ - -
  
 #### Variables
 Variables are identified by special characters such as `!"§$%&/)=?*+~'#-_.:,;<>|^°` which can only consist of only 1
