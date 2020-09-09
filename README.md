@@ -19,8 +19,8 @@ The token syntax is as Simple as in Brainfuck, but some tokens have arguments
  - `E` - Empties the current memory cell
  - `V[variable identifier]` - V saves the current memory cell into the given variable 
  
-#####Variables
-Variables are identified by special characters such as `!"§$%&/)=?*+~'#-_.:,;<>|^°` which can only consist of only 1
+#### Variables
+Variables are identified by special characters such as `!"Â§$%&/)=?*+~'#-_.:,;<>|^Â°` which can only consist of only 1
 of predefined characters
 
 ## Usage
