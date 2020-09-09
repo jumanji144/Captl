@@ -21,18 +21,33 @@ public class CaptlInterpreter {
     int index;
 
     public CaptlInterpreter(String input) throws IOException {
-        input = input.replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", "").replaceAll("\r", "");
+        input = input.replaceAll("\t", "").replaceAll("\r", "");
         interpret(input);
     }
 
     public void interpret(String input) throws IOException {
-        byte currentByte = 0;
+        byte currentByte;
         while(count < input.length()){
             char c = input.toCharArray()[count];
+            if(c == ';')
+                comment = !comment;
             if(!comment) {
                 currentByte = memory[index];
                 if (skip == 0) {
                     switch (c) {
+                        case 'A':
+                            memory[index] = (byte)parseInt(input);
+                            continue;
+                        case 'd':
+                            for (byte value : parseString(input).getBytes()) {
+                                memory[index] = value;
+                                index++;
+                                checkArray();
+                            }
+                            break;
+                        case 'D':
+                            memory[index] = (byte)(memory[index] - (byte)parseInt(input));
+                            continue;
                         case 'h':
                             currentByte--;
                             memory[index] = currentByte;
@@ -74,12 +89,13 @@ public class CaptlInterpreter {
                                 vars[getSymbolIndex(symbol)] = currentByte;
                                 count++;
                             }
+                            break;
                         case 'e':
                             currentByte = 0;
+                            break;
                         case 'E':
                             memory[index] = 0;
-                        case ';':
-                            comment = !comment;
+                            break;
                     }
                 } else
                     skip--;
@@ -103,6 +119,55 @@ public class CaptlInterpreter {
             index++;
         }
         return -1;
+    }
+
+    private int parseInt(String input){
+        String cache = "";
+        char[] charArray = input.toCharArray();
+        count++;
+        if(getSymbolIndex(charArray[count]) != -1){
+            return vars[getSymbolIndex(charArray[count])];
+        }
+        while(is_digit(charArray[count])){
+            cache += charArray[count];
+            count++;
+        }
+        return Integer.parseInt(cache);
+    }
+
+    private String parseString(String input){
+        String cache = "";
+        char[] charArray = input.toCharArray();
+        count++;
+        if(charArray[count] == '"') {
+            count++;
+            while (charArray[count] != '"') {
+                if(charArray[count] == '\\'){
+                    count++;
+                }
+                cache += charArray[count];
+                count++;
+            }
+        }
+        return cache;
+    }
+
+    private boolean is_digit(char c){
+        switch (c){
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                return true;
+            default:
+                return false;
+        }
     }
 
 }

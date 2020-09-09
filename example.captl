@@ -1,0 +1,12 @@
+HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHp ;Prints out the letter '!';
+N ;Moves to next cell;
+HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHp ;Prints out the letter '"';
+N ;Next Cell;
+ip ;Take a char input and print it;
+N ;Next Cell;
+I ;Take a line input;
+N ;Next Cell;
+e ;Empties the current buffer;
+H ;Increases the cell by one;
+E ;Empties the current cell;
+P ;Prints out the entire memory;

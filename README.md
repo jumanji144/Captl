@@ -18,6 +18,10 @@ The token syntax is as Simple as in Brainfuck, but some tokens have arguments
  - `e` - Empties the byte buffer
  - `E` - Empties the current memory cell
  - `V[variable identifier]` - V saves the current memory cell into the given variable 
+ - `;` - Starts or ends a comment 
+ - `A` - Adds the following number to the current cell
+ - `D` - Subtracts the following number from the cell
+ - `d` - Decodes a String into memory
  
 #### Variables
 Variables are identified by special characters such as `!"§$%&/)=?*+~'#-_.:,;<>|^°` which can only consist of only 1
