@@ -23,7 +23,9 @@ The token syntax is as Simple as in Brainfuck, but some tokens have arguments
  - `D<number/variable>` - Subtracts the following number from the cell
  - `d"<string>"` - Decodes a String into memory
  - `r<number/variable><token>` - Repeats the token times the given number
- - -
+ - `R<number/variable>` - Sets the recursion_number pointer to the given number
+ - `[` - Enters the while(block != recursion number) loop
+ - `]` - jumps back to `[` if block != recursion_number
  
 #### Variables
 Variables are identified by special characters such as `!"§$%&/)=?*+~'#-_.:,;<>|^°` which can only consist of only 1

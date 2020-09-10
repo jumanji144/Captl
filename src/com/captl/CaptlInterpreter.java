@@ -12,13 +12,18 @@ import java.util.Scanner;
 public class CaptlInterpreter {
 
     byte[] memory = new byte[32768];
-    int currentVar = 0;
     boolean comment;
     byte[] vars = new byte[24];
     List<Character> var_symbols = CaptlUtil.toCharList("!\"§$%&/)=?*+~'#-_.:,;<>|^°");
+    int[] back = new int[32768];
     int count;
     int skip;
     int index;
+    int indexCache;
+    int recursionAmount;
+    int recursion_number = 0;
+    int depth;
+    int maxIndex = 10;
 
     public CaptlInterpreter(String input) throws IOException {
         input = input.replaceAll("\t", "").replaceAll("\r", "");
@@ -65,11 +70,11 @@ public class CaptlInterpreter {
                             checkArray();
                             break;
                         case 'p':
-                            System.out.println(new String(new byte[]{currentByte}));
+                            System.out.print(new String(new byte[]{currentByte}));
                             break;
                         case 'P':
-                            System.out.println(Arrays.toString(memory));
-                            System.out.println(new String(memory));
+                            System.out.print(Arrays.toString(memory));
+                            System.out.print(new String(memory));
                             break;
                         case 'i':
                             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -96,12 +101,37 @@ public class CaptlInterpreter {
                         case 'E':
                             memory[index] = 0;
                             break;
+                        case 'r':
+                            recursionAmount = parseInt(input);
+                            indexCache = count;
+                            continue;
+                        case 'R':
+                            recursion_number = parseInt(input);
+                        case '[':
+                            depth++;
+                            back[depth] = count;
+                            break;
+                        case ']':
+                            if(memory[index] == recursion_number){
+                                depth--;
+                            }else {
+                                count = back[depth];
+                            }
+                            break;
                     }
                 } else
                     skip--;
             }
+            if(recursionAmount > 1) {
+                recursionAmount--;
+                count = indexCache;
+                continue;
+            }
             count++;
+            if(CaptlEntry.showMem)
+            printMemory();
         }
+        printMemory();
     }
 
     private void checkArray() {
@@ -109,6 +139,8 @@ public class CaptlInterpreter {
             index++;
         if(index >= memory.length)
             index--;
+        if(maxIndex < index)
+            maxIndex = index;
     }
 
     private int getSymbolIndex(char symbol){
@@ -168,6 +200,20 @@ public class CaptlInterpreter {
             default:
                 return false;
         }
+    }
+
+    private void printMemory(){
+        System.out.print("\n[");
+        for(int i=0;i<maxIndex+1;i++){
+            String str = String.valueOf(memory[i]);
+            if(i == index)
+                str = "\033[4m" + String.valueOf(memory[i]) + "\033[0m";
+            if(i < maxIndex)
+            System.out.print(str + ",");
+            else
+                System.out.print(str);
+        }
+        System.out.print("]");
     }
 
 }
